@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --plum: #15091C;
+  --gold: #C8A97E;
+  --pearl: #F9F7FA;
+}
+
+html {
+  background-color: #15091C; /* no white flash on overscroll */
+}
+
+body {
+  background-color: #F9F7FA;
+  color: #15091C;
+  font-family: var(--font-body), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---- Lenis smooth scroll (required CSS) ---- */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* ---- Editorial type ----
+   Display serif is set upright and light. Italics everywhere read as
+   template-y, so the old `italic` utility on serif headings is neutralised
+   globally (works on every page without touching each file). */
+.font-serif {
+  font-weight: 300;
+  letter-spacing: -0.005em;
+  font-feature-settings: "liga", "kern", "dlig";
+}
+.font-serif.italic,
+.font-serif .italic {
+  font-style: normal;
+}
+h1.font-serif, h2.font-serif { font-weight: 300; }
+
+/* ---- Film grain: removes the flat "digital" look of big dark areas ---- */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ---- Gold hairline utility ---- */
+.gold-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,169,126,0.7), transparent);
+}
+
+/* ---- Slow marquee (purity promises) ---- */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track { animation: marquee 38s linear infinite; width: max-content; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+/* ---- Details ---- */
+::selection { background: #C8A97E; color: #15091C; }
+
+:focus-visible {
+  outline: 1px solid #C8A97E;
+  outline-offset: 4px;
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #15091C; }
+::-webkit-scrollbar-thumb { background: #C8A97E; }
+
+@layer utilities {
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee-track { animation: none; }
+}
+
+/* ---- Long-form text from Shopify policies (HTML written in Shopify Admin) ---- */
+.policy-prose { color: rgba(21, 9, 28, 0.75); font-weight: 300; font-size: 15px; line-height: 1.95; }
+.policy-prose h1, .policy-prose h2, .policy-prose h3, .policy-prose h4 {
+  font-family: var(--font-display), serif; font-weight: 400; color: #15091C;
+  line-height: 1.2; margin: 2.4em 0 0.7em; letter-spacing: -0.005em;
+}
+.policy-prose h1 { font-size: 2.2rem; } .policy-prose h2 { font-size: 1.9rem; }
+.policy-prose h3 { font-size: 1.5rem; } .policy-prose h4 { font-size: 1.25rem; }
+.policy-prose > :first-child { margin-top: 0; }
+.policy-prose p { margin: 0 0 1.3em; }
+.policy-prose ul, .policy-prose ol { margin: 0 0 1.5em 1.3em; }
+.policy-prose ul { list-style: none; margin-left: 0; }
+.policy-prose ul li { position: relative; padding-left: 1.4em; margin-bottom: 0.6em; }
+.policy-prose ul li::before { content: ""; position: absolute; left: 0; top: 0.8em; width: 4px; height: 4px; background: #C8A97E; transform: rotate(45deg); }
+.policy-prose ol li { margin-bottom: 0.6em; padding-left: 0.3em; }
+.policy-prose a { color: #8a6d43; text-decoration: underline; text-underline-offset: 3px; }
+.policy-prose a:hover { color: #15091C; }
+.policy-prose strong { font-weight: 500; color: #15091C; }
+.policy-prose table { width: 100%; border-collapse: collapse; margin: 1.5em 0; font-size: 14px; display: block; overflow-x: auto; }
+.policy-prose th, .policy-prose td { border-bottom: 1px solid rgba(21,9,28,0.1); padding: 0.8em 1em; text-align: left; }
